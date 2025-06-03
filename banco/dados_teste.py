@@ -55,12 +55,12 @@ cursor.execute("INSERT INTO email (EmaCom, CodEmp) VALUES (?, ?)", ("suporte@emp
 # Inserir logs
 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 cursor.execute("""
-    INSERT INTO LogHis (DatLog, CodStatus, Response, ObsLog)
+    INSERT INTO log_his (DatLog, CodStatus, Response, ObsLog)
     VALUES (?, ?, ?, ?)""", 
     (now, 200, "Resposta OK", "Teste de log OK"))
 
 cursor.execute("""
-    INSERT INTO LogHis (DatLog, CodStatus, Response, ObsLog)
+    INSERT INTO log_his (DatLog, CodStatus, Response, ObsLog)
     VALUES (?, ?, ?, ?)""", 
     (now, 400, "Erro na requisição", "Teste de log erro"))
 
