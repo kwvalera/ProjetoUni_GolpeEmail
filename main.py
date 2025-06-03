@@ -4,43 +4,49 @@ import datetime
 # Caminho do banco
 DB_PATH = './banco/projeto_bradesco.db'
 
-def conectar_banco():
-    con = sqlite3.connect(DB_PATH)
-    con.execute("PRAGMA foreign_keys = ON")
-    return con
+class VerificadorEmail:
+    def __init__(self, db_path):
+        self.db_path = db_path
 
-def verificar_email(remetente: str):
-    con = conectar_banco()
-    cursor = con.cursor()
+    def conectar_banco(self):
+        con = sqlite3.connect(self.db_path)
+        con.execute("PRAGMA foreign_keys = ON")
+        return con
 
-    # Verifica se o e-mail está na tabela
-    cursor.execute("SELECT * FROM email WHERE EmaCom = ?", (remetente,))
-    resultado = cursor.fetchone()
+    def verificar_email(self, remetente: str):
+        con = self.conectar_banco()
+        cursor = con.cursor()
 
-    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute("SELECT * FROM email WHERE EmaCom = ?", (remetente,))
+        resultado = cursor.fetchone()
 
-    if resultado:
-        print(f"[OK] Email autorizado: {remetente}")
-        cursor.execute("""
-            INSERT INTO LogHis (DatLog, CodStatus, Response, ObsLog)
-            VALUES (?, ?, ?, ?)
-        """, (now, 200, "Autorizado", f"E-mail {remetente} reconhecido."))
-    else:
-        print(f"[ALERTA] Email suspeito: {remetente}")
-        cursor.execute("""
-            INSERT INTO LogHis (DatLog, CodStatus, Response, ObsLog)
-            VALUES (?, ?, ?, ?)
-        """, (now, 403, None, f"E-mail {remetente} não reconhecido."))
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    con.commit()
-    cursor.close()
-    con.close()
+        if resultado:
+            print(f"[OK] Email autorizado: {remetente}")
+            cursor.execute("""
+                INSERT INTO LogHis (DatLog, CodStatus, Response, ObsLog)
+                VALUES (?, ?, ?, ?)
+            """, (now, 200, "Autorizado", f"E-mail {remetente} reconhecido."))
+        else:
+            print(f"[ALERTA] Email suspeito: {remetente}")
+            cursor.execute("""
+                INSERT INTO LogHis (DatLog, CodStatus, Response, ObsLog)
+                VALUES (?, ?, ?, ?)
+            """, (now, 403, None, f"E-mail {remetente} não reconhecido."))
 
-# Simulando recebimento de e-mails
+        con.commit()
+        cursor.close()
+        con.close()
+
+
+# Instanciando e usando a classe
+verificador = VerificadorEmail(DB_PATH)
+
 emails_recebidos = [
     "contato@empresa1.com",
     "fraude@naoexiste.com"
 ]
 
 for email in emails_recebidos:
-    verificar_email(email)
+    verificador.verificar_email(email)
