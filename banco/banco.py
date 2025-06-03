@@ -12,7 +12,7 @@ cursor = con.cursor()
 
 # Criar tabelas países
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS pais (
+CREATE TABLE IF NOT EXISTS Pais (
     CodPais INTEGER PRIMARY KEY AUTOINCREMENT,
     NomPais VARCHAR(100) UNIQUE NOT NULL
 )
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS pais (
 
 # Criar tabelas cidades
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS cidade (
+CREATE TABLE IF NOT EXISTS Cidade (
     CodCid INTEGER PRIMARY KEY AUTOINCREMENT,
     NomCid VARCHAR(100) UNIQUE NOT NULL,
     CodPais INTEGER NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS cidade (
 
 #Criar tabela empresas
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS empresa (
+CREATE TABLE IF NOT EXISTS Empresa (
     CodEmp INTEGER PRIMARY KEY AUTOINCREMENT,
     NumCnpj VARCHAR(18) UNIQUE NOT NULL,
     EndRua TEXT NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS empresa (
 
 # Criar tabelas emails
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS email (
+CREATE TABLE IF NOT EXISTS Email (
     CodEmail INTEGER PRIMARY KEY AUTOINCREMENT,
     EmaCom VARCHAR(254) NOT NULL,
     CodEmp INTEGER NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS email (
 """)
 
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS log_his (
+CREATE TABLE IF NOT EXISTS LogHis (
     CodLog INTEGER PRIMARY KEY AUTOINCREMENT,
     DatLog DATETIME NOT NULL,
     CodStatus INTEGER NOT NULL,

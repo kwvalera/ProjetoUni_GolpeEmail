@@ -17,7 +17,7 @@ class VerificadorEmail:
         con = self.conectar_banco()
         cursor = con.cursor()
 
-        cursor.execute("SELECT * FROM email WHERE EmaCom = ?", (remetente,))
+        cursor.execute("SELECT * FROM Email WHERE EmaCom = ?", (remetente,))
         resultado = cursor.fetchone()
 
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
